@@ -27,7 +27,8 @@ export default function PokedexScreen() {
         {/* Replace this with whatever you want to show */}
         <Image
           source={{
-            uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`,
+            uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonId}.png`,
+            // uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/.png`,
             width: 130,
             height: 130,
           }}
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
   },
   displayBox: {
     marginTop: 20,
-    height: 260,
+    height: 360,
     backgroundColor: "#E9F5FF",
     borderRadius: 12,
     borderWidth: 4,
