@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 // SIMPLE + CLEAN POKEDEX SCREEN (JS VERSION)
 export default function PokedexScreen() {
+  const [pokemonId, setPokemonId] = useState(1);
+
+  const handelNext = () => {
+    setPokemonId((prev) => prev + 1);
+  };
+  const handelPrev = () => {
+    if (pokemonId == 1) {
+      setPokemonId((prev) => prev);
+    } else {
+      setPokemonId((prev) => prev - 1);
+    }
+  };
   return (
     <View style={styles.container}>
       {/* Top Header */}
@@ -13,18 +25,25 @@ export default function PokedexScreen() {
       {/* Display Box */}
       <View style={styles.displayBox}>
         {/* Replace this with whatever you want to show */}
+        <Image
+          source={{
+            uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`,
+            width: 130,
+            height: 130,
+          }}
+        />
         <Text style={styles.displayText}>Your Display Here</Text>
       </View>
 
       {/* Buttons Row */}
       <View style={styles.buttonsRow}>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={handelPrev}>
           <Text style={styles.btnText}>◀</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn}>
           <Text style={styles.btnText}>Select</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={handelNext}>
           <Text style={styles.btnText}>▶</Text>
         </TouchableOpacity>
       </View>
