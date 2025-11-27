@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useFonts } from "expo-font";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
 
 export default function PokedexScreen() {
   const [fontsLoaded] = useFonts({
@@ -19,7 +26,7 @@ export default function PokedexScreen() {
       );
       const dota = await resp.json();
       setData(dota);
-      setName(dota.name);
+      setName(dota.name.toUpperCase());
     };
 
     getPokemon();
@@ -44,9 +51,16 @@ export default function PokedexScreen() {
       <View style={styles.displayBox}>
         <Image
           source={{
+            uri: data?.sprites?.other["official-artwork"]?.front_default,
+          }}
+          style={styles.bgImage}
+        />
+
+        <Image
+          source={{
             uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonId}.png`,
-            width: 130,
-            height: 130,
+            width: 250,
+            height: 250,
           }}
         />
         <Text style={styles.displayText}>{name}</Text>
@@ -79,10 +93,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
+    fontFamily: "pokefont",
     fontSize: 28,
     fontWeight: "bold",
     color: "white",
   },
+  // displayBox: {
+  //   marginTop: 20,
+  //   height: 360,
+  //   backgroundColor: "#E9F5FF",
+  //   borderRadius: 12,
+  //   borderWidth: 4,
+  //   borderColor: "#0A0A0A",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // },
   displayBox: {
     marginTop: 20,
     height: 360,
@@ -92,12 +117,13 @@ const styles = StyleSheet.create({
     borderColor: "#0A0A0A",
     justifyContent: "center",
     alignItems: "center",
+    overflow: "hidden",
   },
   displayText: {
     fontFamily: "pokefont",
     fontSize: 28,
-    fontWeight: "800",
-    color: "#333",
+    fontWeight: "bold",
+    color: "#000000",
   },
   buttonsRow: {
     flexDirection: "row",
@@ -114,5 +140,13 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  bgImage: {
+    position: "absolute",
+    width: 500,
+    height: 500,
+    opacity: 0.2,
+    resizeMode: "contain",
+    top: 10,
   },
 });
