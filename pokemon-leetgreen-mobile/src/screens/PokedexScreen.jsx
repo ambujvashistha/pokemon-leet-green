@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useFonts } from "expo-font";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-// SIMPLE + CLEAN POKEDEX SCREEN (JS VERSION)
 export default function PokedexScreen() {
+  const [fontsLoaded] = useFonts({
+    pokefont: require("../../assets/pokefont.otf"),
+  });
   const [pokemonId, setPokemonId] = useState(1);
   const [url, setUrl] = useState(
     `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
@@ -67,7 +70,7 @@ export default function PokedexScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#D90000", // Pokédex red
+    backgroundColor: "#D90000",
     padding: 20,
     justifyContent: "flex-start",
   },
@@ -91,8 +94,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   displayText: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontFamily: "pokefont",
+    fontSize: 28,
+    fontWeight: "800",
     color: "#333",
   },
   buttonsRow: {
