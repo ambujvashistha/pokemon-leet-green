@@ -1,9 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 // SIMPLE + CLEAN POKEDEX SCREEN (JS VERSION)
 export default function PokedexScreen() {
   const [pokemonId, setPokemonId] = useState(1);
+  const [url, setUrl] = useState(
+    `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
+  );
+  const [name, setName] = useState();
+  const [data, setData] = useState();
+  useEffect(() => {
+    const getPokemon = async () => {
+      const resp = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
+      );
+      const dota = await resp.json();
+      setData(dota);
+      setName(dota.name);
+    };
+
+    getPokemon();
+  }, [pokemonId]);
 
   const handelNext = () => {
     setPokemonId((prev) => prev + 1);
@@ -17,26 +34,21 @@ export default function PokedexScreen() {
   };
   return (
     <View style={styles.container}>
-      {/* Top Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Pokédex</Text>
       </View>
 
-      {/* Display Box */}
       <View style={styles.displayBox}>
-        {/* Replace this with whatever you want to show */}
         <Image
           source={{
             uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonId}.png`,
-            // uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/.png`,
             width: 130,
             height: 130,
           }}
         />
-        <Text style={styles.displayText}>Your Display Here</Text>
+        <Text style={styles.displayText}>{name}</Text>
       </View>
 
-      {/* Buttons Row */}
       <View style={styles.buttonsRow}>
         <TouchableOpacity style={styles.btn} onPress={handelPrev}>
           <Text style={styles.btnText}>◀</Text>
