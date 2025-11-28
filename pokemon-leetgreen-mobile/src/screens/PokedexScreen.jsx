@@ -32,10 +32,10 @@ export default function PokedexScreen() {
     getPokemon();
   }, [pokemonId]);
 
-  const handelNext = () => {
+  const handleNext = () => {
     setPokemonId((prev) => prev + 1);
   };
-  const handelPrev = () => {
+  const handlePrev = () => {
     if (pokemonId == 1) {
       setPokemonId((prev) => prev);
     } else {
@@ -55,27 +55,60 @@ export default function PokedexScreen() {
           }}
           style={styles.bgImage}
         />
-
-        <Image
+        {/* <Image
           source={{
             uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonId}.png`,
             width: 250,
             height: 250,
           }}
+        /> */}
+        <Image
+          source={{
+            uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`,
+            width: 250,
+            height: 250,
+          }}
         />
+
         <Text style={styles.displayText}>{name}</Text>
       </View>
 
       <View style={styles.buttonsRow}>
-        <TouchableOpacity style={styles.btn} onPress={handelPrev}>
+        <TouchableOpacity style={styles.btn} onPress={handlePrev}>
           <Text style={styles.btnText}>◀</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn}>
           <Text style={styles.btnText}>Select</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={handelNext}>
+        <TouchableOpacity style={styles.btn} onPress={handleNext}>
           <Text style={styles.btnText}>▶</Text>
         </TouchableOpacity>
+      </View>
+
+      <View style={styles.controlsWrapper}>
+        <View style={styles.dpad}>
+          <TouchableOpacity style={[styles.dpadButton, styles.dpadUp]}>
+            <Text style={styles.dpadText}>▲</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.dpadButton, styles.dpadDown]}>
+            <Text style={styles.dpadText}>▼</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.dpadButton, styles.dpadLeft]}
+            onPress={handlePrev}
+          >
+            <Text style={styles.dpadText}>◀</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.dpadButton, styles.dpadRight]}
+            onPress={handleNext}
+          >
+            <Text style={styles.dpadText}>▶</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -118,6 +151,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
+    borderTopColor: "#000000",
+    borderBottomColor: "#ffdd00ff",
   },
   displayText: {
     fontFamily: "pokefont",
@@ -143,10 +178,54 @@ const styles = StyleSheet.create({
   },
   bgImage: {
     position: "absolute",
-    width: 500,
-    height: 500,
+    width: 400,
+    height: 400,
     opacity: 0.2,
     resizeMode: "contain",
     top: 10,
+  },
+  dpad: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    backgroundColor: "#2a2a2a",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+    borderWidth: 2,
+    borderColor: "#444",
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 6,
+  },
+
+  dpadButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "#3b3b3b",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    borderWidth: 1,
+    borderColor: "#666",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 4,
+  },
+  dpadUp: {
+    top: 18,
+  },
+  dpadDown: {
+    bottom: 18,
+  },
+  dpadLeft: {
+    left: 18,
+  },
+  dpadRight: {
+    right: 18,
   },
 });
