@@ -1,4 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useAudioPlayer } from "expo-audio";
+
+const audioSource = require("../../assets/sounds/select.wav");
+// import soundDown from "../../assets/sounds/down.mp3";
+// import soundLeft from "../../assets/sounds/left.mp3";
+// import soundRight from "../../assets/sounds/right.mp3";
+
 import { useFonts } from "expo-font";
 import {
   View,
@@ -10,6 +17,7 @@ import {
 } from "react-native";
 
 export default function PokedexScreen() {
+  const select = useAudioPlayer(audioSource);
   const [fontsLoaded] = useFonts({
     pokefont: require("../../assets/pokefont.otf"),
   });
@@ -42,6 +50,7 @@ export default function PokedexScreen() {
       setPokemonId((prev) => prev - 1);
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -77,7 +86,13 @@ export default function PokedexScreen() {
         <TouchableOpacity style={styles.btn} onPress={handlePrev}>
           <Text style={styles.btnText}>◀</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => {
+            select.seekTo(0);
+            select.play();
+          }}
+        >
           <Text style={styles.btnText}>Select</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn} onPress={handleNext}>
