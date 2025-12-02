@@ -42,6 +42,8 @@ export default function PokedexScreen() {
 
   const handleNext = () => {
     setPokemonId((prev) => prev + 1);
+    select.seekTo(0);
+    select.play();
   };
   const handlePrev = () => {
     if (pokemonId == 1) {
@@ -49,6 +51,8 @@ export default function PokedexScreen() {
     } else {
       setPokemonId((prev) => prev - 1);
     }
+    select.seekTo(0);
+    select.play();
   };
 
   return (
@@ -102,11 +106,23 @@ export default function PokedexScreen() {
 
       <View style={styles.controlsWrapper}>
         <View style={styles.dpad}>
-          <TouchableOpacity style={[styles.dpadButton, styles.dpadUp]}>
+          <TouchableOpacity
+            style={[styles.dpadButton, styles.dpadUp]}
+            onPress={() => {
+              select.seekTo(0);
+              select.play();
+            }}
+          >
             <Text style={styles.dpadText}>▲</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.dpadButton, styles.dpadDown]}>
+          <TouchableOpacity
+            style={[styles.dpadButton, styles.dpadDown]}
+            onPress={() => {
+              select.seekTo(0);
+              select.play();
+            }}
+          >
             <Text style={styles.dpadText}>▼</Text>
           </TouchableOpacity>
 
