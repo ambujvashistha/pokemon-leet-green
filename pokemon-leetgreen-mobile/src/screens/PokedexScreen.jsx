@@ -2,39 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useAudioPlayer } from "expo-audio";
 
 const audioSource = require("../../assets/sounds/select.wav");
-// import soundDown from "../../assets/sounds/down.mp3";
-// import soundLeft from "../../assets/sounds/left.mp3";
-// import soundRight from "../../assets/sounds/right.mp3";
 
 import { useFonts } from "expo-font";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
-} from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function PokedexScreen() {
   const select = useAudioPlayer(audioSource);
+
   const [fontsLoaded] = useFonts({
     pokefont: require("../../assets/pokefont.otf"),
   });
+
   const [pokemonId, setPokemonId] = useState(1);
-  const [url, setUrl] = useState(
-    `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
-  );
   const [name, setName] = useState();
   const [data, setData] = useState();
+
   useEffect(() => {
     const getPokemon = async () => {
       const resp = await fetch(
         `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
       );
-      const dota = await resp.json();
-      setData(dota);
-      setName(dota.name.toUpperCase());
+      const json = await resp.json();
+      setData(json);
+      setName(json.name.toUpperCase());
     };
 
     getPokemon();
@@ -45,10 +35,9 @@ export default function PokedexScreen() {
     select.seekTo(0);
     select.play();
   };
+
   const handlePrev = () => {
-    if (pokemonId == 1) {
-      setPokemonId((prev) => prev);
-    } else {
+    if (pokemonId > 1) {
       setPokemonId((prev) => prev - 1);
     }
     select.seekTo(0);
@@ -68,13 +57,7 @@ export default function PokedexScreen() {
           }}
           style={styles.bgImage}
         />
-        {/* <Image
-          source={{
-            uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemonId}.png`,
-            width: 250,
-            height: 250,
-          }}
-        /> */}
+
         <Image
           source={{
             uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`,
@@ -90,6 +73,7 @@ export default function PokedexScreen() {
         <TouchableOpacity style={styles.btn} onPress={handlePrev}>
           <Text style={styles.btnText}>◀</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.btn}
           onPress={() => {
@@ -99,11 +83,28 @@ export default function PokedexScreen() {
         >
           <Text style={styles.btnText}>Select</Text>
         </TouchableOpacity>
+
         <TouchableOpacity style={styles.btn} onPress={handleNext}>
           <Text style={styles.btnText}>▶</Text>
         </TouchableOpacity>
       </View>
 
+      <View style={styles.buttonsRow}>
+        <TouchableOpacity
+          style={[
+            styles.srchbtn,
+            { paddingHorizontal: 10, paddingVertical: 10 },
+          ]}
+          onPress={handleNext}
+        >
+          <Image
+            source={require("../../assets/btn-icons/search_button.png")}
+            style={{ width: 40, height: 40 }}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.buttonsRow}></View>
       <View style={styles.controlsWrapper}>
         <View style={styles.dpad}>
           <TouchableOpacity
@@ -162,16 +163,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  // displayBox: {
-  //   marginTop: 20,
-  //   height: 360,
-  //   backgroundColor: "#E9F5FF",
-  //   borderRadius: 12,
-  //   borderWidth: 4,
-  //   borderColor: "#0A0A0A",
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  // },
   displayBox: {
     marginTop: 20,
     height: 360,
@@ -195,6 +186,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 25,
+    alignItems: "center",
   },
   btn: {
     backgroundColor: "#222",
@@ -237,7 +229,6 @@ const styles = StyleSheet.create({
     elevation: 6,
     borderBottomColor: "#696464ff",
   },
-
   dpadButton: {
     width: 60,
     height: 60,
@@ -253,16 +244,15 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 4,
   },
-  dpadUp: {
-    top: 18,
-  },
-  dpadDown: {
-    bottom: 18,
-  },
-  dpadLeft: {
-    left: 18,
-  },
-  dpadRight: {
-    right: 18,
+  dpadUp: { top: 18 },
+  dpadDown: { bottom: 18 },
+  dpadLeft: { left: 18 },
+  dpadRight: { right: 18 },
+  srchbtn: {
+    backgroundColor: "#ffffff",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+    width: 60,
   },
 });
