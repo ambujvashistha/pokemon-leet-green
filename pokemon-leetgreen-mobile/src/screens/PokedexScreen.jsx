@@ -16,6 +16,7 @@ export default function PokedexScreen() {
   const [pokemonId, setPokemonId] = useState(1);
   const [name, setName] = useState();
   const [data, setData] = useState();
+  const [search, setSearch] = useState(false);
 
   useEffect(() => {
     const getPokemon = async () => {
@@ -35,7 +36,11 @@ export default function PokedexScreen() {
     select.seekTo(0);
     select.play();
   };
-
+  const handleSearch = () => {
+    setSearch((prev) => !prev);
+    select.seekTo(0);
+    select.play();
+  };
   const handlePrev = () => {
     if (pokemonId > 1) {
       setPokemonId((prev) => prev - 1);
@@ -70,6 +75,8 @@ export default function PokedexScreen() {
       </View>
 
       <View style={styles.buttonsRow}>
+      
+      
         <TouchableOpacity style={styles.btn} onPress={handlePrev}>
           <Text style={styles.btnText}>◀</Text>
         </TouchableOpacity>
@@ -84,18 +91,12 @@ export default function PokedexScreen() {
           <Text style={styles.btnText}>Select</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btn} onPress={handleNext}>
-          <Text style={styles.btnText}>▶</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.buttonsRow}>
         <TouchableOpacity
           style={[
             styles.srchbtn,
             { paddingHorizontal: 10, paddingVertical: 10 },
           ]}
-          onPress={handleNext}
+          onPress={handleSearch}
         >
           <Image
             source={require("../../assets/btn-icons/search_button.png")}
@@ -104,43 +105,46 @@ export default function PokedexScreen() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.buttonsRow}></View>
       <View style={styles.controlsWrapper}>
-        <View style={styles.dpad}>
-          <TouchableOpacity
-            style={[styles.dpadButton, styles.dpadUp]}
-            onPress={() => {
-              select.seekTo(0);
-              select.play();
-            }}
-          >
-            <Text style={styles.dpadText}>▲</Text>
-          </TouchableOpacity>
+        {search ? (
+          <View></View>
+        ) : (
+          <View style={styles.dpad}>
+            <TouchableOpacity
+              style={[styles.dpadButton, styles.dpadUp]}
+              onPress={() => {
+                select.seekTo(0);
+                select.play();
+              }}
+            >
+              <Text style={styles.dpadText}>▲</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.dpadButton, styles.dpadDown]}
-            onPress={() => {
-              select.seekTo(0);
-              select.play();
-            }}
-          >
-            <Text style={styles.dpadText}>▼</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.dpadButton, styles.dpadDown]}
+              onPress={() => {
+                select.seekTo(0);
+                select.play();
+              }}
+            >
+              <Text style={styles.dpadText}>▼</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.dpadButton, styles.dpadLeft]}
-            onPress={handlePrev}
-          >
-            <Text style={styles.dpadText}>◀</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.dpadButton, styles.dpadLeft]}
+              onPress={handlePrev}
+            >
+              <Text style={styles.dpadText}>◀</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.dpadButton, styles.dpadRight]}
-            onPress={handleNext}
-          >
-            <Text style={styles.dpadText}>▶</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={[styles.dpadButton, styles.dpadRight]}
+              onPress={handleNext}
+            >
+              <Text style={styles.dpadText}>▶</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -174,7 +178,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     overflow: "hidden",
     borderTopColor: "#000000",
-    borderBottomColor: "#ffdd00ff",
+    borderBottomColor: "#a44f00ff",
   },
   displayText: {
     fontFamily: "pokefont",
@@ -208,9 +212,13 @@ const styles = StyleSheet.create({
     top: 10,
   },
   controlsWrapper: {
-    marginTop: 30,
+    // flexDirection: "row",
+    // justifyContent: "space-between",
+    // marginTop: 25,
     alignItems: "center",
-    justifyContent: "center",
+    marginTop: 30,
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   dpad: {
     width: 260,
@@ -249,10 +257,9 @@ const styles = StyleSheet.create({
   dpadLeft: { left: 18 },
   dpadRight: { right: 18 },
   srchbtn: {
-    backgroundColor: "#ffffff",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    backgroundColor: "#7AC74C",
+    paddingHorizontal: 12,
+    paddingVertical: 10,
     borderRadius: 8,
-    width: 60,
   },
 });
