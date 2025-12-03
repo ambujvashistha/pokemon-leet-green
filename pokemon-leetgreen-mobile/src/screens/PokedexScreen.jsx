@@ -59,8 +59,11 @@ export default function PokedexScreen() {
     select.seekTo(0);
     select.play();
   };
-
   const handleSearch = () => {
+    const id = Number(searchText);
+    setPokemonId(id);
+  };
+  const startSearch = () => {
     setSearch((prev) => !prev);
     select.seekTo(0);
     select.play();
@@ -102,6 +105,7 @@ export default function PokedexScreen() {
                 value={searchText}
                 onChangeText={setSearchText}
                 autoFocus={true}
+                onSubmitEditing={handleSearch}
               />
             </View>
           </View>
@@ -111,7 +115,7 @@ export default function PokedexScreen() {
               styles.srchbtn,
               { paddingHorizontal: 10, paddingVertical: 10 },
             ]}
-            onPress={handleSearch}
+            onPress={startSearch}
           >
             <Image
               source={require("../../assets/btn-icons/search_button.png")}
@@ -140,7 +144,7 @@ export default function PokedexScreen() {
               styles.srchbtn,
               { paddingHorizontal: 10, paddingVertical: 10 },
             ]}
-            onPress={handleSearch}
+            onPress={startSearch}
           >
             <Image
               source={require("../../assets/btn-icons/search_button.png")}
@@ -247,7 +251,7 @@ const styles = StyleSheet.create({
     height: width * 1,
     opacity: 0.2,
     resizeMode: "contain",
-    top: 10,
+    top: 8,
   },
 
   buttonsRow: {
@@ -273,7 +277,7 @@ const styles = StyleSheet.create({
   },
 
   srchbtn: {
-    backgroundColor: "#06c4d2ff",
+    backgroundColor: "#00d7e6ff",
     paddingHorizontal: width * 0.03,
     paddingVertical: width * 0.03,
     borderRadius: 50,
@@ -322,7 +326,7 @@ const styles = StyleSheet.create({
 
   inputBox: {
     height: height * 0.055,
-    width: width * 0.8,
+    width: width * 0.75,
     backgroundColor: "#333",
     borderRadius: width * 0.02,
     justifyContent: "center",
@@ -339,9 +343,9 @@ const styles = StyleSheet.create({
     width: width * 0.05,
     height: width * 0.05,
     borderRadius: width * 0.05,
-    backgroundColor: "#66ff00ff",
+    backgroundColor: "#388d00ff",
     borderWidth: 2,
-    borderColor: "#225500ff",
+    borderColor: "#000000ff",
   },
 
   indicatorGlow: {
@@ -349,6 +353,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 45,
     shadowOffset: { width: 5, height: 0 },
+    backgroundColor: "#66ff00ff",
+    borderWidth: 2,
+    borderColor: "#225500ff",
     elevation: 25,
   },
 });
