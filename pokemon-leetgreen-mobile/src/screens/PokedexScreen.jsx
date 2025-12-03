@@ -5,9 +5,19 @@ const audioSource = require("../../assets/sounds/select.wav");
 
 import { useFonts } from "expo-font";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 
 export default function PokedexScreen() {
   const select = useAudioPlayer(audioSource);
+  const [glow, setGlow] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGlow((g) => !g);
+    }, 400); // blink speed
+
+    return () => clearInterval(interval);
+  }, []);
 
   const [fontsLoaded] = useFonts({
     pokefont: require("../../assets/pokefont.otf"),
@@ -53,6 +63,7 @@ export default function PokedexScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Pokédex</Text>
+        <View style={[styles.indicator, glow && styles.indicatorGlow]} />
       </View>
 
       <View style={styles.displayBox}>
@@ -70,40 +81,58 @@ export default function PokedexScreen() {
             height: 250,
           }}
         />
-
         <Text style={styles.displayText}>{name}</Text>
       </View>
 
-      <View style={styles.buttonsRow}>
-      
-      
-        <TouchableOpacity style={styles.btn} onPress={handlePrev}>
-          <Text style={styles.btnText}>◀</Text>
-        </TouchableOpacity>
+      {search ? (
+        <View style={styles.buttonsRow}>
+          <View style={styles.inputBox}>
+            <Text style={styles.inputText}>Search Pokémon</Text>
+          </View>
 
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => {
-            select.seekTo(0);
-            select.play();
-          }}
-        >
-          <Text style={styles.btnText}>Select</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.srchbtn,
+              { paddingHorizontal: 10, paddingVertical: 10 },
+            ]}
+            onPress={handleSearch}
+          >
+            <Image
+              source={require("../../assets/btn-icons/search_button.png")}
+              style={{ width: 30, height: 30 }}
+            />
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.buttonsRow}>
+          <TouchableOpacity style={styles.btn} onPress={handlePrev}>
+            <Text style={styles.btnText}>◀</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.srchbtn,
-            { paddingHorizontal: 10, paddingVertical: 10 },
-          ]}
-          onPress={handleSearch}
-        >
-          <Image
-            source={require("../../assets/btn-icons/search_button.png")}
-            style={{ width: 40, height: 40 }}
-          />
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => {
+              select.seekTo(0);
+              select.play();
+            }}
+          >
+            <Text style={styles.btnText}>Select</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.srchbtn,
+              { paddingHorizontal: 10, paddingVertical: 10 },
+            ]}
+            onPress={handleSearch}
+          >
+            <Image
+              source={require("../../assets/btn-icons/search_button.png")}
+              style={{ width: 30, height: 30 }}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
 
       <View style={styles.controlsWrapper}>
         {search ? (
@@ -158,7 +187,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   header: {
-    paddingVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   title: {
@@ -197,6 +227,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 8,
+    borderColor: "#004d53ff",
+    borderWidth: 2,
   },
   btnText: {
     color: "white",
@@ -235,7 +267,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 6,
     elevation: 6,
-    borderBottomColor: "#696464ff",
+    borderBottomColor: "#312a2aff",
   },
   dpadButton: {
     width: 60,
@@ -257,9 +289,52 @@ const styles = StyleSheet.create({
   dpadLeft: { left: 18 },
   dpadRight: { right: 18 },
   srchbtn: {
-    backgroundColor: "#7AC74C",
+    backgroundColor: "#06c4d2ff",
     paddingHorizontal: 12,
     paddingVertical: 10,
+    borderRadius: 50,
+    borderColor: "#004d53ff",
+    borderWidth: 2,
+  },
+  indicator: {
+    width: 20,
+    height: 20,
+    borderRadius: 20,
+    backgroundColor: "#66ff00ff",
+    borderWidth: 2,
+    borderColor: "#225500ff",
+  },
+  indicatorGlow: {
+    shadowColor: "#00ff15ff",
+    shadowOpacity: 0.9,
+    shadowRadius: 45,
+    shadowOffset: { width: 5, height: 0 },
+    elevation: 25,
+  },
+  searchTitle: {
+    color: "white",
+    fontSize: 22,
+    fontFamily: "pokefont",
+    marginBottom: 10,
+  },
+
+  inputBox: {
+    height: 50,
+    backgroundColor: "#333",
     borderRadius: 8,
+    justifyContent: "center",
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+
+  inputText: {
+    color: "white",
+    fontSize: 18,
+    fontFamily: "pokefont",
+  },
+
+  keyboard: {
+    marginTop: 10,
+    alignItems: "center",
   },
 });
