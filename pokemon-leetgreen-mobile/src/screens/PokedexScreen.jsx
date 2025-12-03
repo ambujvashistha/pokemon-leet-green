@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useAudioPlayer } from "expo-audio";
+import { useFonts } from "expo-font";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Dimensions,
+} from "react-native";
 
 const audioSource = require("../../assets/sounds/select.wav");
-
-import { useFonts } from "expo-font";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+const { width, height } = Dimensions.get("window");
 
 export default function PokedexScreen() {
   const select = useAudioPlayer(audioSource);
   const [glow, setGlow] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setGlow((g) => !g);
-    }, 400); // blink speed
-
+    const interval = setInterval(() => setGlow((g) => !g), 400);
     return () => clearInterval(interval);
   }, []);
 
@@ -27,7 +31,7 @@ export default function PokedexScreen() {
   const [name, setName] = useState();
   const [data, setData] = useState();
   const [search, setSearch] = useState(false);
-  const [searchText, setSearchText]= useState()
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     const getPokemon = async () => {
@@ -47,15 +51,17 @@ export default function PokedexScreen() {
     select.seekTo(0);
     select.play();
   };
-  const handleSearch = () => {
-    setSearch((prev) => !prev);
-    select.seekTo(0);
-    select.play();
-  };
+
   const handlePrev = () => {
     if (pokemonId > 1) {
       setPokemonId((prev) => prev - 1);
     }
+    select.seekTo(0);
+    select.play();
+  };
+
+  const handleSearch = () => {
+    setSearch((prev) => !prev);
     select.seekTo(0);
     select.play();
   };
@@ -78,10 +84,10 @@ export default function PokedexScreen() {
         <Image
           source={{
             uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`,
-            width: 250,
-            height: 250,
           }}
+          style={styles.pokemonSprite}
         />
+
         <Text style={styles.displayText}>{name}</Text>
       </View>
 
@@ -145,9 +151,7 @@ export default function PokedexScreen() {
       )}
 
       <View style={styles.controlsWrapper}>
-        {search ? (
-          <View></View>
-        ) : (
+        {!search && (
           <View style={styles.dpad}>
             <TouchableOpacity
               style={[styles.dpadButton, styles.dpadUp]}
@@ -193,79 +197,99 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#D90000",
-    padding: 20,
+    padding: width * 0.05,
     justifyContent: "flex-start",
   },
+
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
+
   title: {
     fontFamily: "pokefont",
-    fontSize: 28,
+    fontSize: width * 0.07,
     fontWeight: "bold",
     color: "white",
   },
+
   displayBox: {
-    marginTop: 20,
-    height: 360,
+    marginTop: height * 0.02,
+    height: height * 0.38,
     backgroundColor: "#E9F5FF",
-    borderRadius: 12,
-    borderWidth: 4,
+    borderRadius: width * 0.03,
+    borderWidth: width * 0.01,
     borderColor: "#0A0A0A",
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
-    borderTopColor: "#000000",
+    borderTopColor: "#000",
     borderBottomColor: "#a44f00ff",
   },
+
+  pokemonSprite: {
+    width: width * 0.55,
+    height: width * 0.55,
+    resizeMode: "contain",
+  },
+
   displayText: {
     fontFamily: "pokefont",
-    fontSize: 28,
+    fontSize: width * 0.07,
     fontWeight: "bold",
-    color: "#000000",
+    color: "#000",
   },
-  buttonsRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 25,
-    alignItems: "center",
-  },
-  btn: {
-    backgroundColor: "#222",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
-    borderColor: "#004d53ff",
-    borderWidth: 2,
-  },
-  btnText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
+
   bgImage: {
     position: "absolute",
-    width: 400,
-    height: 400,
+    width: width * 1,
+    height: width * 1,
     opacity: 0.2,
     resizeMode: "contain",
     top: 10,
   },
-  controlsWrapper: {
-    // flexDirection: "row",
-    // justifyContent: "space-between",
-    // marginTop: 25,
+
+  buttonsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: height * 0.03,
     alignItems: "center",
-    marginTop: 30,
-    // alignItems: "center",
-    // justifyContent: "center",
   },
+
+  btn: {
+    backgroundColor: "#222",
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.015,
+    borderRadius: width * 0.02,
+    borderColor: "#004d53ff",
+    borderWidth: 2,
+  },
+
+  btnText: {
+    color: "white",
+    fontSize: width * 0.04,
+    fontWeight: "bold",
+  },
+
+  srchbtn: {
+    backgroundColor: "#06c4d2ff",
+    paddingHorizontal: width * 0.03,
+    paddingVertical: width * 0.03,
+    borderRadius: 50,
+    borderColor: "#004d53ff",
+    borderWidth: 2,
+  },
+
+  controlsWrapper: {
+    alignItems: "center",
+    marginTop: height * 0.04,
+  },
+
   dpad: {
-    width: 260,
-    height: 200,
-    borderRadius: 80,
+    width: width * 0.7,
+    height: height * 0.22,
+    borderRadius: width * 0.25,
     backgroundColor: "#2a2a2a",
     justifyContent: "center",
     alignItems: "center",
@@ -277,73 +301,54 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 6,
     elevation: 6,
-    borderBottomColor: "#312a2aff",
   },
+
   dpadButton: {
-    width: 60,
-    height: 60,
-    borderRadius: 25,
+    width: width * 0.16,
+    height: width * 0.16,
+    borderRadius: width * 0.08,
     backgroundColor: "#473f3fff",
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
     borderWidth: 1,
     borderColor: "#666",
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 4,
   },
-  dpadUp: { top: 18 },
-  dpadDown: { bottom: 18 },
-  dpadLeft: { left: 18 },
-  dpadRight: { right: 18 },
-  srchbtn: {
-    backgroundColor: "#06c4d2ff",
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 50,
-    borderColor: "#004d53ff",
-    borderWidth: 2,
+
+  dpadUp: { top: height * 0.015 },
+  dpadDown: { bottom: height * 0.015 },
+  dpadLeft: { left: width * 0.03 },
+  dpadRight: { right: width * 0.03 },
+
+  inputBox: {
+    height: height * 0.055,
+    width: width * 0.8,
+    backgroundColor: "#333",
+    borderRadius: width * 0.02,
+    justifyContent: "center",
+    paddingHorizontal: width * 0.03,
   },
+
+  inputText: {
+    color: "white",
+    fontSize: width * 0.05,
+    fontFamily: "pokefont",
+  },
+
   indicator: {
-    width: 20,
-    height: 20,
-    borderRadius: 20,
+    width: width * 0.05,
+    height: width * 0.05,
+    borderRadius: width * 0.05,
     backgroundColor: "#66ff00ff",
     borderWidth: 2,
     borderColor: "#225500ff",
   },
+
   indicatorGlow: {
     shadowColor: "#00ff15ff",
     shadowOpacity: 0.9,
     shadowRadius: 45,
     shadowOffset: { width: 5, height: 0 },
     elevation: 25,
-  },
-  searchTitle: {
-    color: "white",
-    fontSize: 22,
-    fontFamily: "pokefont",
-    marginBottom: 10,
-  },
-
-  inputBox: {
-    height: 45,
-    backgroundColor: "#333",
-    borderRadius: 8,
-    justifyContent: "center",
-    paddingHorizontal: 10,
-  },
-
-  inputText: {
-    color: "white",
-    fontSize: 18,
-    fontFamily: "pokefont",
-  },
-
-  keyboard: {
-    marginTop: 10,
-    alignItems: "center",
   },
 });
