@@ -27,6 +27,7 @@ export default function PokedexScreen() {
     pokefont: require("../../assets/pokefont.otf"),
   });
 
+  const [pokemonName, setPokemonName] = useState("");
   const [pokemonId, setPokemonId] = useState(1);
   const [name, setName] = useState();
   const [data, setData] = useState();
@@ -35,16 +36,19 @@ export default function PokedexScreen() {
 
   useEffect(() => {
     const getPokemon = async () => {
-      const resp = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
-      );
+      let pkm = pokemonId;
+      if (pokemonName != "") {
+        pkm = pokemonName;
+      }
+      const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${pkm}`);
       const json = await resp.json();
       setData(json);
+      setPokemonId(json.id);
       setName(json.name.toUpperCase());
     };
 
     getPokemon();
-  }, [pokemonId]);
+  }, [pokemonId, pokemonName]);
 
   const handleNext = () => {
     setPokemonId((prev) => prev + 1);
@@ -61,6 +65,9 @@ export default function PokedexScreen() {
   };
   const handleSearch = () => {
     const id = Number(searchText);
+    const name = searchText.toLowerCase();
+
+    setPokemonName(name);
     setPokemonId(id);
   };
   const startSearch = () => {
