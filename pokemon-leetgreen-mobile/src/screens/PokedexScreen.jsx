@@ -86,8 +86,10 @@ export default function PokedexScreen() {
 
       {search ? (
         <View style={styles.buttonsRow}>
-          <View style={styles.inputBox}>
-            <Text style={styles.inputText}>Search Pokémon</Text>
+          <View style={styles.searchLeftSide}>
+            <View style={styles.inputBox}>
+              <Text style={styles.inputText}>Search Pokémon</Text>
+            </View>
           </View>
 
           <TouchableOpacity
@@ -319,12 +321,11 @@ const styles = StyleSheet.create({
   },
 
   inputBox: {
-    height: 50,
+    height: 45,
     backgroundColor: "#333",
     borderRadius: 8,
     justifyContent: "center",
     paddingHorizontal: 10,
-    marginBottom: 20,
   },
 
   inputText: {
