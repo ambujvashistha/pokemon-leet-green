@@ -27,6 +27,7 @@ export default function PokedexScreen() {
   const [name, setName] = useState();
   const [data, setData] = useState();
   const [search, setSearch] = useState(false);
+  const [searchText, setSearchText]= useState()
 
   useEffect(() => {
     const getPokemon = async () => {
