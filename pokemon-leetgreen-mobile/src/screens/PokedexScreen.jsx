@@ -28,6 +28,7 @@ export default function PokedexScreen() {
   });
 
   const [pokemonName, setPokemonName] = useState("");
+  const [types, setTypes] = useState([]);
   const [pokemonId, setPokemonId] = useState(1);
   const [name, setName] = useState();
   const [data, setData] = useState();
@@ -40,10 +41,12 @@ export default function PokedexScreen() {
       if (pokemonName != "") {
         pkm = pokemonName;
       }
+      setPokemonName("");
       const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${pkm}`);
       const json = await resp.json();
       setData(json);
       setPokemonId(json.id);
+      setTypes(json.types);
       setName(json.name.toUpperCase());
     };
 
@@ -66,7 +69,7 @@ export default function PokedexScreen() {
   const handleSearch = () => {
     const id = Number(searchText);
     const name = searchText.toLowerCase();
-
+    setSearchText("");
     setPokemonName(name);
     setPokemonId(id);
   };
@@ -99,6 +102,7 @@ export default function PokedexScreen() {
         />
 
         <Text style={styles.displayText}>{name}</Text>
+        <Text></Text>
       </View>
 
       {search ? (
@@ -356,7 +360,7 @@ const styles = StyleSheet.create({
   },
 
   indicatorGlow: {
-    shadowColor: "#00ff15ff",
+    shadowColor: "#ffffffff",
     shadowOpacity: 0.9,
     shadowRadius: 45,
     shadowOffset: { width: 5, height: 0 },
