@@ -88,7 +88,14 @@ export default function PokedexScreen() {
         <View style={styles.buttonsRow}>
           <View style={styles.searchLeftSide}>
             <View style={styles.inputBox}>
-              <Text style={styles.inputText}>Search Pokémon</Text>
+              <TextInput
+                style={styles.inputText}
+                placeholder="Search Pokémon"
+                placeholderTextColor="#aaaaaa"
+                value={searchText}
+                onChangeText={setSearchText}
+                autoFocus={true}
+              />
             </View>
           </View>
 
