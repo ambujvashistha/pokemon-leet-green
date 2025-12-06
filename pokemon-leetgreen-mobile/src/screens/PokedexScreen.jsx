@@ -84,9 +84,14 @@ export default function PokedexScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <TouchableOpacity >
-        <PokedexDrawer/>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            select.seekTo(0);
+            select.play();
+          }}
+        >
+          <PokedexDrawer />
+        </TouchableOpacity>
         <Text style={styles.title}>Pokédex</Text>
         <View style={[styles.indicator, glow && styles.indicatorGlow]} />
       </View>
