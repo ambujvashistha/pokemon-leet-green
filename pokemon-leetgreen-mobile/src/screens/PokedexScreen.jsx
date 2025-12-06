@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
+  Svg,
 } from "react-native";
+import PokedexDrawer from "../components/PokedexDrawer";
 
 const audioSource = require("../../assets/sounds/select.wav");
 const { width, height } = Dimensions.get("window");
@@ -82,6 +84,9 @@ export default function PokedexScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+      <TouchableOpacity >
+        <PokedexDrawer/>
+      </TouchableOpacity>
         <Text style={styles.title}>Pokédex</Text>
         <View style={[styles.indicator, glow && styles.indicatorGlow]} />
       </View>
@@ -362,8 +367,8 @@ const styles = StyleSheet.create({
   indicatorGlow: {
     shadowColor: "#ffffffff",
     shadowOpacity: 0.9,
-    shadowRadius: 45,
-    shadowOffset: { width: 5, height: 0 },
+    shadowRadius: 10,
+    shadowOffset: { width: 5, height: -1 },
     backgroundColor: "#66ff00ff",
     borderWidth: 2,
     borderColor: "#225500ff",
